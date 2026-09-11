@@ -66,7 +66,7 @@ hl.animation({
     enabled = true,
     speed   = 3 ,
     bezier  = "default",  -- must be 'bezier' instead of 'curve'
-    style   = "slide -100%", -- positive 100% slides down from the top
+    style   = "slidevert -100%", -- positive 100% slides down from the top
 })
 
 -- Darker background dimming when scratchpad is active
