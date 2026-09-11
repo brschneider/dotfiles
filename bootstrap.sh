@@ -11,8 +11,11 @@ if ! command -v pacman >/dev/null 2>&1; then
     exit 1
 fi
 
-# Refresh sudo credentials upfront
+# Refresh sudo credentials upfront and keep alive in background
 sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+SUDO_KEEPALIVE_PID=$!
+trap 'kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true' EXIT
 
 # 2. Detect Microsoft Surface devices and configure linux-surface kernel
 is_surface=false
@@ -86,7 +89,7 @@ sudo pacman -S --needed --noconfirm git chezmoi
 DOTFILES_REPO="https://github.com/brschneider/dotfiles.git"
 
 echo "==> Initializing and applying chezmoi from $DOTFILES_REPO..."
-chezmoi init --apply "$DOTFILES_REPO"
+chezmoi init --apply --force "$DOTFILES_REPO"
 
 echo "========================================="
 echo "   Bootstrapping Complete! 🎉"

@@ -59,27 +59,94 @@ fi
 # 2. Native packages via pacman
 if [ -f "$CHEZMOI_DIR/pkglist-native.txt" ]; then
     echo "==> Synchronizing native packages (pacman)..."
-    sudo pacman -S --needed --noconfirm - < "$CHEZMOI_DIR/pkglist-native.txt"
+
+    # Filter hardware-specific packages that should only be installed if matching hardware exists
+    FILTERED_PKGS=()
+    while IFS= read -r pkg || [ -n "$pkg" ]; do
+        # Trim leading/trailing whitespace
+        pkg="$(echo -e "${pkg}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+        [ -z "$pkg" ] && continue
+        [[ "$pkg" =~ ^# ]] && continue
+
+        # Check AMD microcode
+        if [ "$pkg" = "amd-ucode" ]; then
+            if ! grep -qi "AuthenticAMD" /proc/cpuinfo 2>/dev/null; then
+                continue
+            fi
+        fi
+
+        # Check CachyOS v4 mirrorlist (requires x86-64-v4 support)
+        if [ "$pkg" = "cachyos-v4-mirrorlist" ]; then
+            if ! /lib/ld-linux-x86-64.so.2 --help 2>/dev/null | grep -q "x86-64-v4"; then
+                continue
+            fi
+        fi
+
+        # Check AMDGPU Xorg driver (requires AMD GPU)
+        if [ "$pkg" = "xf86-video-amdgpu" ]; then
+            if ! lspci 2>/dev/null | grep -qi "VGA.*AMD"; then
+                # If lspci not available or not AMD GPU, skip Xorg legacy amdgpu driver
+                continue
+            fi
+        fi
+
+        FILTERED_PKGS+=("$pkg")
+    done < "$CHEZMOI_DIR/pkglist-native.txt"
+
+    # Try batch installation first for speed
+    if ! sudo pacman -S --needed --noconfirm "${FILTERED_PKGS[@]}"; then
+        echo "==> Warning: Batch native package install encountered an error. Retrying missing packages individually..."
+        for pkg in "${FILTERED_PKGS[@]}"; do
+            if ! pacman -Q "$pkg" >/dev/null 2>&1; then
+                echo "--> Installing $pkg..."
+                sudo pacman -S --needed --noconfirm "$pkg" || echo "--> [WARNING] Failed to install native package: $pkg (skipped)"
+            fi
+        done
+    fi
 fi
 
-# 2. AUR packages via yay
+# 3. AUR packages via yay
 if [ -f "$CHEZMOI_DIR/pkglist-aur.txt" ]; then
     if ! command -v yay >/dev/null 2>&1; then
         echo "==> 'yay' not found, installing yay..."
         tmpdir=$(mktemp -d)
         git clone https://aur.archlinux.org/yay.git "$tmpdir/yay"
-        (cd "$tmpdir/yay" && makepkg -si --noconfirm)
+        (cd "$tmpdir/yay" && makepkg -si --noconfirm) || true
         rm -rf "$tmpdir"
     fi
-    echo "==> Synchronizing AUR packages (yay)..."
-    yay -S --needed --noconfirm - < "$CHEZMOI_DIR/pkglist-aur.txt"
+
+    if command -v yay >/dev/null 2>&1; then
+        echo "==> Synchronizing AUR packages (yay)..."
+        AUR_PKGS=()
+        while IFS= read -r pkg || [ -n "$pkg" ]; do
+            pkg="$(echo -e "${pkg}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            [ -z "$pkg" ] && continue
+            [[ "$pkg" =~ ^# ]] && continue
+            AUR_PKGS+=("$pkg")
+        done < "$CHEZMOI_DIR/pkglist-aur.txt"
+
+        # Try batch AUR installation first
+        if ! yay -S --needed --noconfirm --answerclean None --answerdiff None "${AUR_PKGS[@]}"; then
+            echo "==> Warning: Batch AUR package install encountered an error. Retrying missing packages individually..."
+            for pkg in "${AUR_PKGS[@]}"; do
+                if ! pacman -Q "$pkg" >/dev/null 2>&1; then
+                    echo "--> Installing AUR package: $pkg..."
+                    yay -S --needed --noconfirm --answerclean None --answerdiff None "$pkg" || echo "--> [WARNING] Failed to install AUR package: $pkg (skipped)"
+                fi
+            done
+        fi
+    else
+        echo "==> [ERROR] Unable to install yay; AUR packages could not be installed."
+    fi
 fi
 
-# 3. Flatpaks
+# 4. Flatpaks
 if [ -f "$CHEZMOI_DIR/pkglist-flatpak.txt" ] && command -v flatpak >/dev/null 2>&1; then
     echo "==> Synchronizing Flatpaks..."
     while IFS= read -r app || [ -n "$app" ]; do
+        app="$(echo -e "${app}" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
         [ -z "$app" ] && continue
+        [[ "$app" =~ ^# ]] && continue
         if ! flatpak info "$app" >/dev/null 2>&1; then
             echo "Installing flatpak: $app"
             flatpak install -y flathub "$app" || true
