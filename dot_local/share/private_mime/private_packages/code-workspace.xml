@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-code-oss-workspace">
+    <comment>Code - OSS Workspace</comment>
+    <glob pattern="*.code-workspace" weight="80"/>
+  </mime-type>
+  <mime-type type="application/x-code-workspace">
+    <comment>Visual Studio Code Workspace</comment>
+    <glob pattern="*.code-workspace" weight="80"/>
+  </mime-type>
+</mime-info>
