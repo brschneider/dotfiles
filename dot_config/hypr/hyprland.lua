@@ -64,9 +64,9 @@ hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "default" })
 hl.animation({
     leaf    = "specialWorkspace",
     enabled = true,
-    speed   = 3,
+    speed   = 3 ,
     bezier  = "default",  -- must be 'bezier' instead of 'curve'
-    style   = "slidefadevert 100%", -- positive 100% slides down from the top
+    style   = "slidefadevert -100%", -- positive 100% slides down from the top
 })
 
 -- Darker background dimming when scratchpad is active
