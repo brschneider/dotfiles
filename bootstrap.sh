@@ -95,18 +95,17 @@ echo "========================================="
 echo "   Bootstrapping Complete! 🎉"
 echo "========================================="
 
-# 6. Launch Hyprland / DMS session
+# 6. Launch DMS greeter (greetd)
 if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ]; then
-    echo "==> Starting Hyprland with Dank Material Shell..."
-    if command -v uwsm >/dev/null 2>&1; then
+    echo "==> Starting DMS Login Greeter..."
+    if systemctl is-enabled greetd.service >/dev/null 2>&1 || systemctl list-unit-files greetd.service >/dev/null 2>&1; then
+        sudo systemctl restart greetd.service || sudo systemctl start greetd.service
+    elif command -v uwsm >/dev/null 2>&1; then
         exec uwsm start hyprland-uwsm.desktop || exec Hyprland
     elif command -v Hyprland >/dev/null 2>&1; then
         exec Hyprland
     elif command -v hyprland >/dev/null 2>&1; then
         exec hyprland
-    elif systemctl is-enabled greetd.service >/dev/null 2>&1; then
-        echo "==> Starting greetd service..."
-        sudo systemctl start greetd.service
     fi
 else
     echo "==> Graphical session already active ($WAYLAND_DISPLAY). Reloading configuration..."
