@@ -1,0 +1,90 @@
+{
+  "folders": [
+    {
+      "name": "chezmoi-source",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true
+    },
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Chezmoi: Apply, Commit, and Push",
+        "type": "shell",
+        "command": "chezmoi apply --verbose && git -C \"${workspaceFolder}\" add -A && (git -C \"${workspaceFolder}\" diff --cached --quiet || git -C \"${workspaceFolder}\" commit -m \"Update dotfiles: $(date '+%Y-%m-%d %H:%M')\") && git -C \"${workspaceFolder}\" push",
+        "options": {
+          "shell": {
+            "executable": "/bin/bash",
+            "args": [
+              "-c"
+            ]
+          }
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      },
+      {
+        "label": "Chezmoi: Apply, Commit with Message, and Push",
+        "type": "shell",
+        "command": "chezmoi apply --verbose && git -C \"${workspaceFolder}\" add -A && (git -C \"${workspaceFolder}\" diff --cached --quiet || git -C \"${workspaceFolder}\" commit -m \"${input:commitMessage}\") && git -C \"${workspaceFolder}\" push",
+        "options": {
+          "shell": {
+            "executable": "/bin/bash",
+            "args": [
+              "-c"
+            ]
+          }
+        },
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "group": {
+          "kind": "none"
+        }
+      },
+      {
+        "label": "Chezmoi: Status & Diff",
+        "type": "shell",
+        "command": "chezmoi status && chezmoi diff",
+        "problemMatcher": [],
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        }
+      }
+    ],
+    "inputs": [
+      {
+        "id": "commitMessage",
+        "description": "Commit message for dotfiles:",
+        "type": "promptString",
+        "default": "Update dotfiles"
+      }
+    ]
+  }
+}
