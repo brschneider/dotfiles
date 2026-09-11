@@ -1,0 +1,63 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Chezmoi: Apply, Commit, and Push",
+      "type": "shell",
+      "command": "chezmoi apply --verbose && git -C /home/brschneider/.local/share/chezmoi add -A && (git -C /home/brschneider/.local/share/chezmoi diff --cached --quiet || git -C /home/brschneider/.local/share/chezmoi commit -m \"Update dotfiles: $(date '+%Y-%m-%d %H:%M')\") && git -C /home/brschneider/.local/share/chezmoi push",
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "group": {
+        "kind": "none"
+      }
+    },
+    {
+      "label": "Chezmoi: Apply, Commit with Message, and Push",
+      "type": "shell",
+      "command": "chezmoi apply --verbose && git -C /home/brschneider/.local/share/chezmoi add -A && (git -C /home/brschneider/.local/share/chezmoi diff --cached --quiet || git -C /home/brschneider/.local/share/chezmoi commit -m \"${input:commitMessage}\") && git -C /home/brschneider/.local/share/chezmoi push",
+      "options": {
+        "shell": {
+          "executable": "/bin/bash",
+          "args": [
+            "-c"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "group": {
+        "kind": "none"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "description": "Commit message for dotfiles:",
+      "type": "promptString",
+      "default": "Update dotfiles"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+[
+  {
+    "key": "ctrl+alt+p",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Chezmoi: Apply, Commit, and Push"
+  }
+]
