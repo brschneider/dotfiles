@@ -13,8 +13,11 @@ hl.bind("SUPER + Y", hl.dsp.exec_cmd("dms ipc call dash toggle wallpaper"))
 hl.bind("SUPER + TAB", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
 hl.bind("SUPER + O", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
+hl.bind("SUPER + B", function() os.execute("zen-browser &") end)
 
 hl.bind("SUPER + E", function() os.execute("nautilus &") end)
+hl.bind("SUPER + A", function() os.execute("alacritty -e antigravidy-cli --dangerously-skip-permissions &") end)
+
 
 -- === Cheat sheet
 hl.bind("SUPER + SHIFT + Slash", hl.dsp.exec_cmd("dms ipc call keybinds toggle hyprland"))
@@ -47,6 +50,22 @@ hl.bind("SUPER + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", act
 hl.bind("SUPER + T", hl.dsp.window.float({ action = "toggle" }))
 -- hl.bind("SUPER + W", hl.dsp.group.toggle())
 hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("dms ipc call window-rules toggle"))
+
+-- Toggle the special workspace (scratchpad) on/off
+hl.bind("SUPER + S", hl.dsp.workspace.toggle_special("scratch"))
+
+-- Smart window move using native Lua state (non-blocking)
+hl.bind("SUPER + SHIFT + S", function()
+    if hl.get_active_special_workspace() then
+        -- If we are inside the special workspace, pull the window back out to current workspace
+        hl.dispatch(hl.dsp.window.move({ workspace = "current" }))
+    else
+        -- If we are on a normal workspace, send the window silently to the scratchpad
+        hl.dispatch(hl.dsp.window.move({ workspace = "special:scratch", silent = true }))
+    end
+end)
+
+
 
 -- === Focus Navigation ===
 hl.bind("SUPER + left", hl.dsp.focus({ direction = "l" }))

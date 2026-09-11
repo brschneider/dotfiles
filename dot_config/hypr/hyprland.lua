@@ -32,6 +32,7 @@ hl.config({
 		rounding = 0,
 		active_opacity = 1.0,
 		inactive_opacity = 1.0,
+		dim_special = 0.75,
 		shadow = {
 			enabled = true,
 			range = 30,
@@ -58,6 +59,23 @@ hl.animation({ leaf = "workspaces", enabled = false, speed = 5, bezier = "defaul
 hl.animation({ leaf = "windowsMove", enabled = true, speed = 4, bezier = "default" })
 hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "default" })
 hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "default" })
+
+-- Scratchpad animation (slide down from the top using a bezier curve)
+hl.animation({
+    leaf    = "specialWorkspace",
+    enabled = true,
+    speed   = 9,
+    bezier  = "default",  -- must be 'bezier' instead of 'curve'
+    style   = "slidefadevert 100%", -- positive 100% slides down from the top
+})
+
+-- Darker background dimming when scratchpad is active
+hl.config({
+    decoration = {
+        dim_special = 0.75, -- ranges from 0.0 to 1.0 (higher = darker background)
+    },
+})
+
 
 hl.window_rule({ match = { class = "^(org\\.wezfurlong\\.wezterm)$" }, tile = true })
 hl.window_rule({ match = { class = "^(org\\.gnome\\.)" }, rounding = 12 })
