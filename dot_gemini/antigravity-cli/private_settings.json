@@ -1,0 +1,7 @@
+{
+  "model": "Gemini 3.8 Flash (Low)",
+  "trustedWorkspaces": [
+    "/home/brschneider",
+    "/home/brschneider/.local/share/chezmoi/dot_config"
+  ]
+}
