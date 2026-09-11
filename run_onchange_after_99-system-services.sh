@@ -43,7 +43,15 @@ if systemctl --user list-unit-files wl-clip-persist.service >/dev/null 2>&1; the
     fi
 fi
 
-# 5. Enable iptsd.service if installed (Surface touch daemon)
+# 5. Enable user syncthing.service if present
+if systemctl --user list-unit-files syncthing.service >/dev/null 2>&1; then
+    if ! systemctl --user is-enabled syncthing.service >/dev/null 2>&1; then
+        echo "Enabling and starting user syncthing.service..."
+        systemctl --user enable --now syncthing.service
+    fi
+fi
+
+# 6. Enable iptsd.service if installed (Surface touch daemon)
 if systemctl list-unit-files iptsd.service >/dev/null 2>&1; then
     if ! systemctl is-enabled iptsd.service >/dev/null 2>&1; then
         echo "Enabling iptsd.service (Surface touch/pen support)..."
@@ -51,7 +59,7 @@ if systemctl list-unit-files iptsd.service >/dev/null 2>&1; then
     fi
 fi
 
-# 6. Apply font preferences (JetBrains Mono)
+# 7. Apply font preferences (JetBrains Mono)
 if command -v gsettings >/dev/null 2>&1; then
     echo "==> Applying desktop font preferences..."
     gsettings set org.gnome.desktop.interface font-name 'JetBrains Mono 11' 2>/dev/null || true
@@ -59,7 +67,7 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface document-font-name 'JetBrains Mono 11' 2>/dev/null || true
 fi
 
-# 7. Refresh font cache
+# 8. Refresh font cache
 if command -v fc-cache >/dev/null 2>&1; then
     echo "==> Refreshing font cache..."
     fc-cache -f >/dev/null 2>&1 || true
