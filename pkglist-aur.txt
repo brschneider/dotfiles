@@ -1,0 +1,5 @@
+antigravity-cli
+antigravity-ide
+dsearch-bin
+greetd-dms-greeter-bin
+proton-pass-bin
