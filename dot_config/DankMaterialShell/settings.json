@@ -60,6 +60,7 @@
   "showWorkspaceIndex": true,
   "workspaceFollowFocus": true,
   "appIdSubstitutions": [],
+  "networkPreference": "ethernet",
   "cursorSettings": {
     "theme": "System Default",
     "size": 37,
