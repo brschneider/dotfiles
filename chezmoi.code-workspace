@@ -9,7 +9,13 @@
     "files.exclude": {
       "**/.git": true
     },
-    "terminal.integrated.defaultProfile.linux": "bash"
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.profiles.linux": {
+      "Antigravity (agy)": {
+        "path": "/usr/bin/agy",
+        "icon": "sparkle"
+      }
+    }
   },
   "tasks": {
     "version": "2.0.0",
