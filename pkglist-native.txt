@@ -189,6 +189,7 @@ wget
 which
 wireplumber
 wl-clipboard
+wl-clip-persist
 wpa_supplicant
 wxwidgets-gtk3
 xdg-user-dirs

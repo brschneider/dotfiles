@@ -35,5 +35,14 @@ if systemctl --user list-unit-files gnome-keyring-daemon.socket >/dev/null 2>&1;
     fi
 fi
 
+# 4. Enable wl-clip-persist.service if present
+if systemctl --user list-unit-files wl-clip-persist.service >/dev/null 2>&1; then
+    if ! systemctl --user is-enabled wl-clip-persist.service >/dev/null 2>&1; then
+        echo "Enabling user wl-clip-persist.service..."
+        systemctl --user enable wl-clip-persist.service
+    fi
+fi
+
 echo "==> Services successfully configured."
+
 
