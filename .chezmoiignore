@@ -1,2 +1,5 @@
 chezmoi.code-workspace
 .vscode/
+README.md
+bootstrap.sh
+pkglist-*.txt

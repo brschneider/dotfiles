@@ -12,7 +12,7 @@ hl.bind("SUPER + N", hl.dsp.exec_cmd("dms ipc call notepad toggle"))
 hl.bind("SUPER + Y", hl.dsp.exec_cmd("dms ipc call dash toggle wallpaper"))
 hl.bind("SUPER + TAB", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
 hl.bind("SUPER + O", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
-hl.bind("SUPER + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
+hl.bind("SUPER + Z", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
 
 -- === Application Shortcuts === --
 hl.bind("SUPER + B", function() os.execute("zen-browser &") end)

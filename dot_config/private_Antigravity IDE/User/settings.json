@@ -6,6 +6,7 @@
     "terminal.integrated.profiles.linux": {
         "Antigravity": {
           "path": "/usr/bin/agy",
+          "args": ["--dangerously-skip-permissions"],
           "icon": "sparkle"
         }
       }
