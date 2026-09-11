@@ -14,7 +14,45 @@ fi
 # Refresh sudo credentials upfront
 sudo -v
 
-# 2. Install Dank Material Shell (DMS) + Hyprland + Alacritty if not already installed
+# 2. Detect Microsoft Surface devices and configure linux-surface kernel
+is_surface=false
+dmi_vendor=$(cat /sys/devices/virtual/dmi/id/sys_vendor 2>/dev/null || true)
+dmi_product=$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || true)
+
+if echo "$dmi_vendor $dmi_product" | grep -qi "surface"; then
+    is_surface=true
+fi
+
+if [ "$is_surface" = true ]; then
+    echo "==> Microsoft Surface hardware detected ($dmi_product)!"
+    echo "==> Configuring linux-surface repository and kernel..."
+
+    # Import and sign repository key if not already present
+    if ! pacman-key --list-keys 56C464BAAC421453 >/dev/null 2>&1; then
+        echo "==> Importing linux-surface key..."
+        curl -s https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc \
+            | sudo pacman-key --add -
+        sudo pacman-key --finger 56C464BAAC421453
+        sudo pacman-key --lsign-key 56C464BAAC421453
+    fi
+
+    # Add [linux-surface] repo to /etc/pacman.conf if not present
+    if ! grep -q "^\[linux-surface\]" /etc/pacman.conf; then
+        echo "==> Adding [linux-surface] repository to /etc/pacman.conf..."
+        sudo bash -c 'cat >> /etc/pacman.conf << '\''EOF'\''
+
+[linux-surface]
+Server = https://pkg.surfacelinux.com/arch/
+EOF'
+        sudo pacman -Sy
+    fi
+
+    # Install linux-surface kernel, headers, and iptsd touch daemon
+    echo "==> Installing linux-surface kernel, headers, and iptsd..."
+    sudo pacman -S --needed --noconfirm linux-surface linux-surface-headers iptsd
+fi
+
+# 3. Install Dank Material Shell (DMS) + Hyprland + Alacritty if not already installed
 if ! command -v dms >/dev/null 2>&1; then
     echo "==> Installing Dank Material Shell (DMS)..."
     curl -fsSL https://install.danklinux.com | sh -s -- -c hyprland -t alacritty -y
@@ -22,11 +60,11 @@ else
     echo "==> DMS already installed, skipping installer."
 fi
 
-# 3. Ensure git and chezmoi are installed
+# 4. Ensure git and chezmoi are installed
 echo "==> Ensuring git and chezmoi are installed..."
 sudo pacman -S --needed --noconfirm git chezmoi
 
-# 4. Initialize and apply dotfiles
+# 5. Initialize and apply dotfiles
 DOTFILES_REPO="https://github.com/brschneider/dotfiles.git"
 
 echo "==> Initializing and applying chezmoi from $DOTFILES_REPO..."

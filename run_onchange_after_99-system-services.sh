@@ -41,7 +41,17 @@ if systemctl --user list-unit-files wl-clip-persist.service >/dev/null 2>&1; the
         echo "Enabling user wl-clip-persist.service..."
         systemctl --user enable wl-clip-persist.service
     fi
-# 5. Apply font preferences (JetBrains Mono)
+fi
+
+# 5. Enable iptsd.service if installed (Surface touch daemon)
+if systemctl list-unit-files iptsd.service >/dev/null 2>&1; then
+    if ! systemctl is-enabled iptsd.service >/dev/null 2>&1; then
+        echo "Enabling iptsd.service (Surface touch/pen support)..."
+        sudo systemctl enable iptsd.service
+    fi
+fi
+
+# 6. Apply font preferences (JetBrains Mono)
 if command -v gsettings >/dev/null 2>&1; then
     echo "==> Applying desktop font preferences..."
     gsettings set org.gnome.desktop.interface font-name 'JetBrains Mono 11' 2>/dev/null || true
@@ -49,7 +59,7 @@ if command -v gsettings >/dev/null 2>&1; then
     gsettings set org.gnome.desktop.interface document-font-name 'JetBrains Mono 11' 2>/dev/null || true
 fi
 
-# 6. Refresh font cache
+# 7. Refresh font cache
 if command -v fc-cache >/dev/null 2>&1; then
     echo "==> Refreshing font cache..."
     fc-cache -f >/dev/null 2>&1 || true

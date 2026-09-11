@@ -10,7 +10,35 @@ CHEZMOI_DIR="{{ .chezmoi.sourceDir }}"
 
 echo "==> Checking & installing package lists..."
 
-# 1. Native packages via pacman
+# 1. Hardware-specific: Microsoft Surface detection & linux-surface kernel
+dmi_vendor=$(cat /sys/devices/virtual/dmi/id/sys_vendor 2>/dev/null || true)
+dmi_product=$(cat /sys/devices/virtual/dmi/id/product_name 2>/dev/null || true)
+
+if echo "$dmi_vendor $dmi_product" | grep -qi "surface"; then
+    echo "==> Microsoft Surface hardware detected ($dmi_product)!"
+    if ! pacman-key --list-keys 56C464BAAC421453 >/dev/null 2>&1; then
+        echo "==> Importing linux-surface key..."
+        curl -s https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc \
+            | sudo pacman-key --add -
+        sudo pacman-key --finger 56C464BAAC421453
+        sudo pacman-key --lsign-key 56C464BAAC421453
+    fi
+
+    if ! grep -q "^\[linux-surface\]" /etc/pacman.conf; then
+        echo "==> Adding [linux-surface] repository to /etc/pacman.conf..."
+        sudo bash -c 'cat >> /etc/pacman.conf << '\''EOF'\''
+
+[linux-surface]
+Server = https://pkg.surfacelinux.com/arch/
+EOF'
+        sudo pacman -Sy
+    fi
+
+    echo "==> Ensuring linux-surface kernel, headers, and iptsd are installed..."
+    sudo pacman -S --needed --noconfirm linux-surface linux-surface-headers iptsd
+fi
+
+# 2. Native packages via pacman
 if [ -f "$CHEZMOI_DIR/pkglist-native.txt" ]; then
     echo "==> Synchronizing native packages (pacman)..."
     sudo pacman -S --needed --noconfirm - < "$CHEZMOI_DIR/pkglist-native.txt"
