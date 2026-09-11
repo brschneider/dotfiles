@@ -101,10 +101,13 @@ hl.window_rule({ match = { class = "^(zoom)$" }, float = true })
 hl.layer_rule({ match = { namespace = "^(quickshell)$" }, no_anim = true })
 hl.layer_rule({ match = { namespace = "^dms:.*" }, no_anim = true })
 
-require("dms.colors")
-require("dms.outputs")
-require("dms.layout")
-require("dms.cursor")
-require("dms.binds")
-require("dms.binds-user")
-require("dms.windowrules")
+pcall(require, "dms.colors")
+if not pcall(require, "dms.outputs") then
+	-- Fallback default monitor rule if dms.outputs has not been generated locally yet
+	hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
+end
+pcall(require, "dms.layout")
+pcall(require, "dms.cursor")
+pcall(require, "dms.binds")
+pcall(require, "dms.binds-user")
+pcall(require, "dms.windowrules")

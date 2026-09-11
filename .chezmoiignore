@@ -3,3 +3,9 @@ chezmoi.code-workspace
 README.md
 bootstrap.sh
 pkglist-*.txt
+
+# Hardware-specific monitor, display, and input configs
+.config/hypr/dms/outputs.lua
+.config/hypr/dms/outputs.conf
+.config/hypr/monitors.conf
+.config/hypr/workspaces.conf
