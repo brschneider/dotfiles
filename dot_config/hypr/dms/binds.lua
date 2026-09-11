@@ -13,8 +13,9 @@ hl.bind("SUPER + Y", hl.dsp.exec_cmd("dms ipc call dash toggle wallpaper"))
 hl.bind("SUPER + TAB", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
 hl.bind("SUPER + O", hl.dsp.exec_cmd("dms ipc call hypr toggleOverview"))
 hl.bind("SUPER + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
-hl.bind("SUPER + B", function() os.execute("zen-browser &") end)
 
+-- === Application Shortcuts === --
+hl.bind("SUPER + B", function() os.execute("zen-browser &") end)
 hl.bind("SUPER + E", function() os.execute("nautilus &") end)
 hl.bind("SUPER + A", function() os.execute("alacritty -e antigravidy-cli --dangerously-skip-permissions &") end)
 
