@@ -55,16 +55,6 @@ hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("dms ipc call window-rules toggle")
 -- Toggle the special workspace (scratchpad) on/off
 hl.bind("SUPER + S", hl.dsp.workspace.toggle_special("scratch"))
 
--- Smart window move using native Lua state (non-blocking)
-hl.bind("SUPER + SHIFT + S", function()
-    if hl.get_active_special_workspace() then
-        -- If we are inside the special workspace, pull the window back out to current workspace
-        hl.dispatch(hl.dsp.window.move({ workspace = "current" }))
-    else
-        -- If we are on a normal workspace, send the window silently to the scratchpad
-        hl.dispatch(hl.dsp.window.move({ workspace = "special:scratch", silent = true }))
-    end
-end)
 
 
 
