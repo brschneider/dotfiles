@@ -68,6 +68,7 @@ fsarchiver
 git
 github-cli
 glances
+gnome-keyring
 greetd
 gst-libav
 gst-plugin-pipewire
@@ -89,6 +90,7 @@ lib32-vulkan-radeon
 libdvdcss
 libgsf
 libopenraw
+libsecret
 limine
 limine-mkinitcpio-hook
 limine-snapper-sync

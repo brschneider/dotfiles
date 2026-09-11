@@ -17,13 +17,23 @@ if systemctl list-unit-files greetd.service >/dev/null 2>&1; then
     fi
 fi
 
-# 2. Enable user dms.service
+# 2. Enable user dms.service and reload user systemd daemons
+systemctl --user daemon-reload
+
 if systemctl --user list-unit-files dms.service >/dev/null 2>&1; then
-    systemctl --user daemon-reload
     if ! systemctl --user is-enabled dms.service >/dev/null 2>&1; then
         echo "Enabling user dms.service..."
         systemctl --user enable dms.service
     fi
 fi
 
+# 3. Enable GNOME Keyring daemon socket/service if present
+if systemctl --user list-unit-files gnome-keyring-daemon.socket >/dev/null 2>&1; then
+    if ! systemctl --user is-enabled gnome-keyring-daemon.socket >/dev/null 2>&1; then
+        echo "Enabling user gnome-keyring-daemon.socket..."
+        systemctl --user enable gnome-keyring-daemon.socket
+    fi
+fi
+
 echo "==> Services successfully configured."
+
