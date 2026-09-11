@@ -36,6 +36,24 @@ EOF'
 
     echo "==> Ensuring linux-surface kernel, headers, and iptsd are installed..."
     sudo pacman -S --needed --noconfirm linux-surface linux-surface-headers iptsd
+
+    # Ensure linux-surface is the default Limine boot option if Limine is used
+    limine_default="/etc/default/limine"
+    if [ -f "$limine_default" ] || command -v limine-update >/dev/null 2>&1; then
+        echo "==> Setting linux-surface as the default Limine boot option..."
+        if [ -f "$limine_default" ]; then
+            if ! grep -q "\*surface" "$limine_default"; then
+                sudo sed -i -E 's/BOOT_ORDER="([^"]*)"/BOOT_ORDER="*surface, \1"/' "$limine_default"
+            fi
+        else
+            echo 'BOOT_ORDER="*surface, *, *lts, *fallback, Snapshots"' | sudo tee -a "$limine_default" >/dev/null
+        fi
+
+        if command -v limine-update >/dev/null 2>&1; then
+            echo "==> Updating Limine boot entries..."
+            sudo limine-update || true
+        fi
+    fi
 fi
 
 # 2. Native packages via pacman
