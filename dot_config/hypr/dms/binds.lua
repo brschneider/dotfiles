@@ -17,7 +17,7 @@ hl.bind("SUPER + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
 -- === Application Shortcuts === --
 hl.bind("SUPER + B", function() os.execute("zen-browser &") end)
 hl.bind("SUPER + E", function() os.execute("nautilus &") end)
-hl.bind("SUPER + A", function() os.execute("alacritty -e antigravidy-cli --dangerously-skip-permissions &") end)
+hl.bind("SUPER + A", function() os.execute("alacritty -e agy --dangerously-skip-permissions &") end)
 
 
 -- === Cheat sheet

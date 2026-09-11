@@ -1,0 +1,28 @@
+{
+  "lockfileVersion": 1,
+  "plugins": {
+    "antigravityUsage": {
+      "repo": "https://github.com/FeikoWielsma/dms-antigravity-cli",
+      "commit": "b10676be20679702a3c5941e638972c32858a604"
+    },
+    "dankActions": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankActions",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "dankGifSearch": {
+      "repo": "https://github.com/AvengeMedia/dms-plugins",
+      "path": "DankGifSearch",
+      "commit": "6fc7f25bfb24f93b6488fb8a36ed67b5f242abdb"
+    },
+    "shellyUpdater": {
+      "repo": "https://github.com/rdannenbring/dms-shelly-updater",
+      "commit": "a48f4ad44fca329e3a593da47c4329f2c50a043f"
+    },
+    "wallpaperDiscovery": {
+      "repo": "https://github.com/lucyfire/dms-plugins",
+      "path": "wallpaperDiscovery",
+      "commit": "c99ba77c848721fbb8b8c3307638ea10d5dccdd9"
+    }
+  }
+}

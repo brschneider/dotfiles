@@ -1,0 +1,30 @@
+{
+  "dankActions": {
+    "enabled": true
+  },
+  "dankGifSearch": {
+    "enabled": true
+  },
+  "shellyUpdater": {
+    "enabled": true
+  },
+  "wallhavenPlugin": {
+    "enabled": true
+  },
+  "wallpaperDiscovery": {
+    "enabled": true,
+    "downloadLocation": "/home/brschneider/Pictures/Wallpapers",
+    "lastWallpaperUsed": "unsplash"
+  },
+  "processList": {
+    "enabled": true
+  },
+  "antigravityUsage": {
+    "enabled": true,
+    "refreshInterval": 2,
+    "useAccentColor": false
+  },
+  "protonVPN": {
+    "enabled": true
+  }
+}
