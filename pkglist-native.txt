@@ -169,6 +169,8 @@ teams-for-linux
 texinfo
 ttf-bitstream-vera
 ttf-dejavu
+ttf-jetbrains-mono
+ttf-jetbrains-mono-nerd
 ttf-liberation
 ttf-meslo-nerd
 ttf-opensans
