@@ -79,7 +79,7 @@
   },
   "launcherLogoMode": "dank",
   "notepadFontSize": 16,
-  "fadeToDpmsEnabled": false,
+  "acLockTimeout": 300,
   "osdPowerProfileEnabled": true,
   "barConfigs": [
     {
@@ -102,15 +102,15 @@
       ],
       "rightWidgets": [
         {
+          "id": "quickCapture",
+          "enabled": true
+        },
+        {
           "id": "wallpaperDiscovery",
           "enabled": true
         },
         {
           "id": "antigravityUsage",
-          "enabled": true
-        },
-        {
-          "id": "vpn",
           "enabled": true
         },
         {
@@ -123,10 +123,6 @@
         },
         "clipboard",
         "notificationButton",
-        {
-          "id": "shellyUpdater",
-          "enabled": true
-        },
         "controlCenterButton",
         {
           "id": "notepadButton",

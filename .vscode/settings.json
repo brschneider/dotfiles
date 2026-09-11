@@ -8,5 +8,6 @@
       "path": "/usr/bin/agy",
       "icon": "sparkle"
     }
-  }
+  },
+  "git.ignoreLimitWarning": true
 }
