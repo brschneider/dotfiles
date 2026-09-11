@@ -11,12 +11,14 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/brschneider/dotfiles/main/
 ```
 
 This single command will:
-1. Prompt for `sudo` and run the Dank Material Shell installer (`curl -fsSL https://install.danklinux.com | sh -s -- -c hyprland -t alacritty -y`).
-2. Install `git` and `chezmoi`.
-3. Pull and apply these dotfiles via chezmoi.
-4. Install all native, AUR, and Flatpak apps.
-5. Setup `greetd` + `dms-greeter` and user `dms.service`.
-6. Restore DMS plugins and Hyprland AI skills.
+1. Prompt for `sudo` and detect Microsoft Surface hardware (sets up `linux-surface` kernel, Limine boot default, and `iptsd` touch/pen daemon if applicable).
+2. Install Dank Material Shell (`curl -fsSL https://install.danklinux.com | sh -s -- -c hyprland -t alacritty -y`).
+3. Install `git` and `chezmoi`.
+4. Pull and apply these dotfiles via chezmoi.
+5. Install all native, AUR, and Flatpak apps.
+6. Setup `greetd` + `dms-greeter` and user `dms.service`.
+7. Restore DMS plugins and Hyprland AI skills.
+8. Automatically boot and launch into Hyprland / Dank Material Shell.
 
 
 ## What this configures

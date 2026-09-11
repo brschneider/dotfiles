@@ -91,3 +91,26 @@ chezmoi init --apply "$DOTFILES_REPO"
 echo "========================================="
 echo "   Bootstrapping Complete! 🎉"
 echo "========================================="
+
+# 6. Launch Hyprland / DMS session
+if [ -z "$WAYLAND_DISPLAY" ] && [ -z "$DISPLAY" ]; then
+    echo "==> Starting Hyprland with Dank Material Shell..."
+    if command -v uwsm >/dev/null 2>&1; then
+        exec uwsm start hyprland-uwsm.desktop || exec Hyprland
+    elif command -v Hyprland >/dev/null 2>&1; then
+        exec Hyprland
+    elif command -v hyprland >/dev/null 2>&1; then
+        exec hyprland
+    elif systemctl is-enabled greetd.service >/dev/null 2>&1; then
+        echo "==> Starting greetd service..."
+        sudo systemctl start greetd.service
+    fi
+else
+    echo "==> Graphical session already active ($WAYLAND_DISPLAY). Reloading configuration..."
+    if command -v hyprctl >/dev/null 2>&1; then
+        hyprctl reload || true
+    fi
+    if command -v dms >/dev/null 2>&1; then
+        dms restart || true
+    fi
+fi
