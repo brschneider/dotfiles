@@ -18,6 +18,8 @@ hl.bind("SUPER + X", hl.dsp.exec_cmd("dms ipc call powermenu toggle"))
 hl.bind("SUPER + B", function() os.execute("zen-browser &") end)
 hl.bind("SUPER + E", function() os.execute("nautilus &") end)
 hl.bind("SUPER + A", function() os.execute("alacritty -e agy --dangerously-skip-permissions &") end)
+hl.bind("SUPER + ALT + O", function() os.execute("obsidian &") end)
+hl.bind("SUPER + ALT + P", function() os.execute("proton-pass &") end)
 
 
 -- === Cheat sheet
