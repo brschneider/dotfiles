@@ -193,3 +193,5 @@ hl.bind("SUPER + P", hl.dsp.exec_cmd("dms ipc outputs cycleProfile"))
 
 -- === System Controls ===
 hl.bind("SUPER + SHIFT + P", hl.dsp.dpms({ action = "toggle" }))
+
+hl.bind("SUPER + ALT + R", hl.dsp.exec_cmd("~/.local/bin/record-window-props/record-window-props.sh"))

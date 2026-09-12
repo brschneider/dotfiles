@@ -15,7 +15,8 @@
         "path": "/usr/bin/agy",
         "icon": "sparkle"
       }
-    }
+    },
+    "git.ignoreLimitWarning": true
   },
   "tasks": {
     "version": "2.0.0",
